@@ -13,8 +13,14 @@ export const config = {
   
   // Cognito設定
   cognito: {
-    // CognitoマネージドログインページのURL
-    loginURL: 'https://ap-northeast-1zswtfdq5h.auth.ap-northeast-1.amazoncognito.com/login?client_id=1md2ve7n7lbl7bohnn37vemeln&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fhadx.h-akira.net'
+    // CognitoマネージドログインページのURL（環境変数から取得）
+    loginURL: (() => {
+      const loginURL = process.env.VUE_APP_COGNITO_LOGIN_URL;
+      if (!loginURL) {
+        throw new Error('環境変数 VUE_APP_COGNITO_LOGIN_URL が設定されていません');
+      }
+      return loginURL;
+    })()
     // 注意: redirect_uriやlogout処理は全てバックエンド設定で管理される
   }
 } 

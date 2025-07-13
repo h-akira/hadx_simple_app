@@ -1,0 +1,45 @@
+version: 0.2
+
+env:
+  parameter-store:
+    COGNITO_LOGIN_URL: "/HadxSampleProject/cognito/login-url"
+    S3_BUCKET_NAME: "/HadxSampleProject/frontend/s3-bucket"
+    CLOUDFRONT_DISTRIBUTION_ID: "/HadxSampleProject/frontend/cloudfront-distribution-id"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing dependencies..."
+      - npm ci
+      
+  pre_build:
+    commands:
+      - echo "Setting up environment variables..."
+      - export VUE_APP_COGNITO_LOGIN_URL=$COGNITO_LOGIN_URL
+      - echo "VUE_APP_COGNITO_LOGIN_URL: $VUE_APP_COGNITO_LOGIN_URL"
+      - echo "S3_BUCKET_NAME: $S3_BUCKET_NAME"
+      - echo "CLOUDFRONT_DISTRIBUTION_ID: $CLOUDFRONT_DISTRIBUTION_ID"
+      
+  build:
+    commands:
+      - echo "Building Vue.js application..."
+      - npm run build
+      
+  post_build:
+    commands:
+      - echo "Deploying to S3..."
+      - aws s3 sync dist/ s3://$S3_BUCKET_NAME --delete
+      - echo "Invalidating CloudFront cache..."
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+      - echo "Deployment completed successfully!"
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: dist
+  
+cache:
+  paths:
+    - node_modules/**/* 
