@@ -5,7 +5,7 @@ env:
     VUE_APP_COGNITO_LOGIN_URL: "/HadxSampleProject/Cognito/login_page"
     VUE_APP_COGNITO_SIGNUP_URL: "/HadxSampleProject/Cognito/signup_page"
     S3_BUCKET_NAME: "/HadxSampleProject/frontend/s3-bucket"
-    CLOUDFRONT_DISTRIBUTION_ID: "/HadxSampleProject/frontend/cloudfront-distribution-id"
+    CLOUDFRONT_DISTRIBUTION_ID: "/HadxSampleProject/CloudFront/distribution_id"
 
 phases:
   install:
