@@ -4,7 +4,7 @@ env:
   parameter-store:
     VUE_APP_COGNITO_LOGIN_URL: "/HadxSampleProject/Cognito/login_page"
     VUE_APP_COGNITO_SIGNUP_URL: "/HadxSampleProject/Cognito/signup_page"
-    S3_BUCKET_NAME: "/HadxSampleProject/frontend/s3-bucket"
+    S3_BUCKET_NAME: "/HadxSampleProject/S3/bucket/contents"
     CLOUDFRONT_DISTRIBUTION_ID: "/HadxSampleProject/CloudFront/distribution_id"
 
 phases:
