@@ -25,6 +25,7 @@
       <div v-else>
         <h2>未ログイン</h2>
         <button @click="login">ログイン</button>
+        <button @click="signup" style="margin-left: 10px;">サインアップ</button>
       </div>
     </div>
     
@@ -93,6 +94,10 @@ export default {
       authService.redirectToLogin()
     }
     
+    const signup = () => {
+      authService.redirectToSignup()
+    }
+    
     const logout = async () => {
       await authService.logout()
     }
@@ -125,6 +130,7 @@ export default {
     return {
       authState,
       login,
+      signup,
       logout,
       sampleState,
       fetchSampleData

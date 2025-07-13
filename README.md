@@ -7,6 +7,7 @@
 - **パブリックページ**: 誰でも閲覧可能なホームページ
 - **プロテクトされたページ**: ログイン必須のページ  
 - **Cognito認証**: マネージドログインページを使用した認証
+- **Cognitoサインアップ**: マネージドサインアップページを使用したユーザー登録
 - **認証状態管理**: リアクティブな認証状態の管理
 
 ## 環境変数の設定
@@ -14,6 +15,7 @@
 このアプリケーションは以下の環境変数を使用します：
 
 - `VUE_APP_COGNITO_LOGIN_URL`: CognitoのログインページURL（必須）
+- `VUE_APP_COGNITO_SIGNUP_URL`: CognitoのサインアップページURL（必須）
 
 ### 1. ローカル開発時の環境変数設定
 
@@ -26,15 +28,20 @@ cp .env.example .env.local
 `.env.local`ファイルを編集：
 ```
 VUE_APP_COGNITO_LOGIN_URL=https://your-cognito-domain.auth.region.amazoncognito.com/login?client_id=your-client-id&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fyour-domain.com
+VUE_APP_COGNITO_SIGNUP_URL=https://your-cognito-domain.auth.region.amazoncognito.com/signup?client_id=your-client-id&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fyour-domain.com
 ```
 
 #### 方法2: コマンドライン実行時に環境変数を設定
 ```bash
 # 開発サーバー起動時
-VUE_APP_COGNITO_LOGIN_URL="https://your-cognito-domain.auth.region.amazoncognito.com/login?client_id=your-client-id&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fyour-domain.com" npm run serve
+VUE_APP_COGNITO_LOGIN_URL="https://your-cognito-domain.auth.region.amazoncognito.com/login?client_id=your-client-id&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fyour-domain.com" \
+VUE_APP_COGNITO_SIGNUP_URL="https://your-cognito-domain.auth.region.amazoncognito.com/signup?client_id=your-client-id&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fyour-domain.com" \
+npm run serve
 
 # ビルド時
-VUE_APP_COGNITO_LOGIN_URL="https://your-cognito-domain.auth.region.amazoncognito.com/login?client_id=your-client-id&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fyour-domain.com" npm run build
+VUE_APP_COGNITO_LOGIN_URL="https://your-cognito-domain.auth.region.amazoncognito.com/login?client_id=your-client-id&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fyour-domain.com" \
+VUE_APP_COGNITO_SIGNUP_URL="https://your-cognito-domain.auth.region.amazoncognito.com/signup?client_id=your-client-id&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fyour-domain.com" \
+npm run build
 ```
 
 ### 2. 本番環境でのビルド・デプロイ
@@ -43,6 +50,7 @@ VUE_APP_COGNITO_LOGIN_URL="https://your-cognito-domain.auth.region.amazoncognito
 ```bash
 # 環境変数を設定してビルド
 export VUE_APP_COGNITO_LOGIN_URL="https://your-cognito-domain.auth.region.amazoncognito.com/login?client_id=your-client-id&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fyour-domain.com"
+export VUE_APP_COGNITO_SIGNUP_URL="https://your-cognito-domain.auth.region.amazoncognito.com/signup?client_id=your-client-id&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fyour-domain.com"
 
 # ビルド
 npm run build
@@ -60,6 +68,8 @@ CodeBuildを使用する場合、環境変数はSSMパラメータストアか�
 必要なSSMパラメータ：
 ```bash
 aws ssm put-parameter --name "/HadxSampleProject/cognito/login-url" --value "https://your-cognito-domain.auth.region.amazoncognito.com/login?client_id=xxx&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fyour-domain.com" --type "String"
+
+aws ssm put-parameter --name "/HadxSampleProject/cognito/signup-url" --value "https://your-cognito-domain.auth.region.amazoncognito.com/signup?client_id=xxx&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fyour-domain.com" --type "String"
 ```
 
 `buildspec.yml`で自動的にビルド・デプロイが実行されます。
@@ -115,8 +125,9 @@ src/
 
 ## 重要な注意点
 
-1. **環境変数は必須**: `VUE_APP_COGNITO_LOGIN_URL`が設定されていない場合、アプリケーションはエラーを発生させます
+1. **環境変数は必須**: `VUE_APP_COGNITO_LOGIN_URL`と`VUE_APP_COGNITO_SIGNUP_URL`が設定されていない場合、アプリケーションはエラーを発生させます
 2. **ビルド時の環境変数**: Vue.jsの環境変数（`VUE_APP_*`）はビルド時にコードに埋め込まれます。配置後の環境では不要です
 3. **リダイレクトURL**: CognitoのリダイレクトURLは末尾のスラッシュなしで設定してください（例：`https://domain.com`）
 4. **認証処理**: 専用のコールバックページではなく、ホームページで認証コードを処理します
+5. **サインアップ後の処理**: サインアップ後もログインと同じようにホームページで認証コードが処理されます
 

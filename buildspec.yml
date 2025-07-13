@@ -2,9 +2,10 @@ version: 0.2
 
 env:
   parameter-store:
-    VUE_APP_COGNITO_LOGIN_URL: "/HadxSampleProject/Cognito/login_page"
-    S3_BUCKET_NAME: "/HadxSampleProject/S3/bucket/contents"
-    CLOUDFRONT_DISTRIBUTION_ID: "/HadxSampleProject/CloudFront/distribution_id"
+    COGNITO_LOGIN_URL: "/HadxSampleProject/cognito/login-url"
+    COGNITO_SIGNUP_URL: "/HadxSampleProject/cognito/signup-url"
+    S3_BUCKET_NAME: "/HadxSampleProject/frontend/s3-bucket"
+    CLOUDFRONT_DISTRIBUTION_ID: "/HadxSampleProject/frontend/cloudfront-distribution-id"
 
 phases:
   install:
@@ -13,6 +14,16 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - npm ci
+      
+  pre_build:
+    commands:
+      - echo "Setting up environment variables..."
+      - export VUE_APP_COGNITO_LOGIN_URL=$COGNITO_LOGIN_URL
+      - export VUE_APP_COGNITO_SIGNUP_URL=$COGNITO_SIGNUP_URL
+      - echo "VUE_APP_COGNITO_LOGIN_URL: $VUE_APP_COGNITO_LOGIN_URL"
+      - echo "VUE_APP_COGNITO_SIGNUP_URL: $VUE_APP_COGNITO_SIGNUP_URL"
+      - echo "S3_BUCKET_NAME: $S3_BUCKET_NAME"
+      - echo "CLOUDFRONT_DISTRIBUTION_ID: $CLOUDFRONT_DISTRIBUTION_ID"
       
   build:
     commands:
@@ -27,11 +38,11 @@ phases:
       - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
       - echo "Deployment completed successfully!"
 
-# artifacts:
-#   files:
-#     - '**/*'
-#   base-directory: dist
-#   
-# cache:
-#   paths:
-#     - node_modules/**/* 
+artifacts:
+  files:
+    - '**/*'
+  base-directory: dist
+  
+cache:
+  paths:
+    - node_modules/**/* 

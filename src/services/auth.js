@@ -119,6 +119,12 @@ export const authService = {
   redirectToLogin() {
     console.log('Cognitoログインページにリダイレクト')
     window.location.href = config.cognito.loginURL
+  },
+
+  // Cognitoサインアップページにリダイレクト
+  redirectToSignup() {
+    console.log('Cognitoサインアップページにリダイレクト')
+    window.location.href = config.cognito.signupURL
   }
 }
 
