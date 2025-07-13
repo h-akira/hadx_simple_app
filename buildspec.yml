@@ -2,8 +2,8 @@ version: 0.2
 
 env:
   parameter-store:
-    COGNITO_LOGIN_URL: "/HadxSampleProject/cognito/login-url"
-    COGNITO_SIGNUP_URL: "/HadxSampleProject/cognito/signup-url"
+    VUE_APP_COGNITO_LOGIN_URL: "/HadxSampleProject/cognito/login-url"
+    VUE_APP_COGNITO_SIGNUP_URL: "/HadxSampleProject/cognito/signup-url"
     S3_BUCKET_NAME: "/HadxSampleProject/frontend/s3-bucket"
     CLOUDFRONT_DISTRIBUTION_ID: "/HadxSampleProject/frontend/cloudfront-distribution-id"
 
@@ -15,15 +15,15 @@ phases:
       - echo "Installing dependencies..."
       - npm ci
       
-  pre_build:
-    commands:
-      - echo "Setting up environment variables..."
-      - export VUE_APP_COGNITO_LOGIN_URL=$COGNITO_LOGIN_URL
-      - export VUE_APP_COGNITO_SIGNUP_URL=$COGNITO_SIGNUP_URL
-      - echo "VUE_APP_COGNITO_LOGIN_URL: $VUE_APP_COGNITO_LOGIN_URL"
-      - echo "VUE_APP_COGNITO_SIGNUP_URL: $VUE_APP_COGNITO_SIGNUP_URL"
-      - echo "S3_BUCKET_NAME: $S3_BUCKET_NAME"
-      - echo "CLOUDFRONT_DISTRIBUTION_ID: $CLOUDFRONT_DISTRIBUTION_ID"
+  # pre_build:
+  #   commands:
+  #     - echo "Setting up environment variables..."
+  #     - export VUE_APP_COGNITO_LOGIN_URL=$COGNITO_LOGIN_URL
+  #     - export VUE_APP_COGNITO_SIGNUP_URL=$COGNITO_SIGNUP_URL
+  #     - echo "VUE_APP_COGNITO_LOGIN_URL: $VUE_APP_COGNITO_LOGIN_URL"
+  #     - echo "VUE_APP_COGNITO_SIGNUP_URL: $VUE_APP_COGNITO_SIGNUP_URL"
+  #     - echo "S3_BUCKET_NAME: $S3_BUCKET_NAME"
+  #     - echo "CLOUDFRONT_DISTRIBUTION_ID: $CLOUDFRONT_DISTRIBUTION_ID"
       
   build:
     commands:
