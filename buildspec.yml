@@ -2,8 +2,8 @@ version: 0.2
 
 env:
   parameter-store:
-    VUE_APP_COGNITO_LOGIN_URL: "/HadxSampleProject/Cognito/login-url"
-    VUE_APP_COGNITO_SIGNUP_URL: "/HadxSampleProject/Cognito/signup-url"
+    VUE_APP_COGNITO_LOGIN_URL: "/HadxSampleProject/Cognito/login_url"
+    VUE_APP_COGNITO_SIGNUP_URL: "/HadxSampleProject/Cognito/signup_url"
     S3_BUCKET_NAME: "/HadxSampleProject/frontend/s3-bucket"
     CLOUDFRONT_DISTRIBUTION_ID: "/HadxSampleProject/frontend/cloudfront-distribution-id"
 
